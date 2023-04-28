@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postCreateUser = void 0;
 const user_1 = __importDefault(require("../models/user"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const postCreateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('working');
     const { fullName, email, password, phoneNumber } = req.body;
@@ -21,9 +22,10 @@ const postCreateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         return res.status(400).json({ message: "Please provide all fields" });
     }
     try {
+        const hashedPassword = bcrypt_1.default.hash(password, 12);
         const [userResponse, created] = yield user_1.default.findOrCreate({
             where: { email },
-            defaults: { fullName, email, password, phoneNumber }
+            defaults: { fullName, email, hashedPassword, phoneNumber }
         });
         if (created) {
             res.status(201).json(userResponse);
