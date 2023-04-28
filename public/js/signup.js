@@ -34,7 +34,14 @@ async function createUser(e) {
         } else {
           alert("Signup successful");
         }
-        //document.location.replace("/dashboard");
+        fullNameInput.value = "";
+        emailInput.value = "";
+        phoneInput.value = "";
+        passwordInput.value = "";
+        confirmPasswordInput.value = "";
+        setTimeout(() => {
+          document.location.replace("/login.html");
+        }, 3000);
       } catch (e) {
         alert("Not valid details");
       }
