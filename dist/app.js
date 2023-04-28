@@ -40,7 +40,9 @@ const database_1 = __importDefault(require("./utils/database"));
 // Use third party libraries
 const app = (0, express_1.default)();
 app.use(express_1.default.static(path_1.default.join(__dirname, '..', 'public')));
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: "http://localhost:3000/"
+}));
 app.use(body_parser_1.default.json());
 // Use Routes
 app.use('/users', authRoutes_1.default);

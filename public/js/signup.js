@@ -18,7 +18,6 @@ async function createUser(e) {
   const password = passwordInput.value;
   const confirmPassword = confirmPasswordInput.value;
   const userObj = { fullName, email, phoneNumber, password, confirmPassword };
-  console.log(userObj, JSON.stringify(userObj));
   if (fullName && email && password && confirmPassword) {
     if (password !== confirmPassword) {
       alert("Passwords do not match");
@@ -30,11 +29,14 @@ async function createUser(e) {
           JSON.stringify(userObj),
           { headers: { "Content-Type": "application/json" } }
         );
-        console.log(response.data);
+        if (response.status == 202) {
+          alert("User already exists");
+        } else {
+          alert("Signup successful");
+        }
         //document.location.replace("/dashboard");
       } catch (e) {
-        console.log(e);
-        alert(e.status);
+        alert("Not valid details");
       }
     }
   } else {

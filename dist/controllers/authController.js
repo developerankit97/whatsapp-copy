@@ -16,7 +16,6 @@ exports.postCreateUser = void 0;
 const user_1 = __importDefault(require("../models/user"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const postCreateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('working');
     const { fullName, email, password, phoneNumber } = req.body;
     if (!fullName || !email || !password || !phoneNumber) {
         return res.status(400).json({ message: "Please provide all fields" });
@@ -25,18 +24,15 @@ const postCreateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         const hashedPassword = bcrypt_1.default.hash(password, 12);
         const [userResponse, created] = yield user_1.default.findOrCreate({
             where: { email },
-            defaults: { fullName, email, hashedPassword, phoneNumber }
+            defaults: { fullName, email, password: hashedPassword, phoneNumber }
         });
         if (created) {
-            res.status(201).json(userResponse);
+            return res.status(201).json({ message: "User Signed up successful" });
         }
-        else {
-            res.status(404).json({ message: "User already exists" });
-        }
+        return res.status(202).json({ message: "User already exists" });
     }
     catch (err) {
-        console.log(err);
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "User creation failed" });
     }
 });
 exports.postCreateUser = postCreateUser;
